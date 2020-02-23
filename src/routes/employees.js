@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
         }
     });
 });
-
+//manejador de funciones
 router.get('/:id', (req, res) => {
     const { id } = req.params;
     mysqlConnection.query('SELECT * FROM employee WHERE id = ?', [id], (err,rows, fields) => {
@@ -23,6 +23,29 @@ router.get('/:id', (req, res) => {
         }
     });
 });
+
+router.post('/', (req, res) => {
+    const { id, name, salary } = req.body;
+
+    const query = `
+        SET @id = ?;
+        SET @name = ?;
+        SET @salary = ?;
+        CALL employeeAddOrEdit(@id,@name,@salary);
+
+    `;
+    mysqlConnection.query(query,[id, name, salary], (err, rows, fields) => {
+        if(!error){
+            res.json({status: 'Employeed Saved'});
+        }
+        else {
+            console.log(err);
+            
+        }
+    });
+});
+
+router.post()
 
 
 module.exports = router; 
