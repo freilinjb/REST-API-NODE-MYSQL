@@ -17,7 +17,7 @@ router.get('/:id', (req, res) => {
     const { id } = req.params;
     mysqlConnection.query('SELECT * FROM employee WHERE id = ?', [id], (err,rows, fields) => {
         if (!err){
-            res.json(rows);
+            res.json(rows[0]);
         }else {
             console.log(err);
         }
@@ -25,4 +25,4 @@ router.get('/:id', (req, res) => {
 });
 
 
-module.exports = router;
+module.exports = router; 
