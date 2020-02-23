@@ -25,27 +25,20 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    const { id, name, salary } = req.body;
-
+    const {id, name, salary} = req.body;
+    console.log(id, name, salary);
     const query = `
-        SET @id = ?;
-        SET @name = ?;
-        SET @salary = ?;
-        CALL employeeAddOrEdit(@id,@name,@salary);
-
+      CALL employeeAddOrEdit(?, ?, ?);
     `;
-    mysqlConnection.query(query,[id, name, salary], (err, rows, fields) => {
-        if(!error){
-            res.json({status: 'Employeed Saved'});
-        }
-        else {
-            console.log(err);
-            
-        }
+    mysqlConnection.query(query, [id, name, salary], (err, rows, fields) => {
+      if(!err) {
+        res.json({status: 'Employeed Saved'});
+      } else {
+        console.log(err);
+      }
     });
-});
-
-router.post()
+  
+  });
 
 
 module.exports = router; 
