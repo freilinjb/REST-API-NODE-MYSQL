@@ -5,37 +5,40 @@ const mysqlConnection = require('../database');
 
 router.get('/', (req, res) => {
     mysqlConnection.query('SELECT * FROM employee', (err, rows, fields) => {
-        if (!err){
+        if (!err) {
             res.json(rows);
-        }else {
+        }
+        else {
             console.log(err);
         }
     });
 });
 //manejador de funciones
-router.get('/:id', (req, res) => {
+router.get('/:id',  (req, res) => {
     const { id } = req.params;
-    mysqlConnection.query('SELECT * FROM employee WHERE id = ?', [id], (err,rows, fields) => {
-        if (!err){
+    mysqlConnection.query('SELECT * FROM employee WHERE id = ?', [id], (err, rows, fields) => {
+        if (!err) {
             res.json(rows[0]);
-        }else {
+        }
+        else {
             console.log(err);
         }
     });
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     const {id, name, salary} = req.body;
     console.log(id, name, salary);
     const query = `
       CALL employeeAddOrEdit(?, ?, ?);
     `;
     mysqlConnection.query(query, [id, name, salary], (err, rows, fields) => {
-      if(!err) {
-        res.json({status: 'Employeed Saved'});
-      } else {
-        console.log(err);
-      }
+        if (!err) {
+            res.json({ status: 'Employeed Saved' });
+        }
+        else {
+            console.log(err);
+        }
     });
   
   });
