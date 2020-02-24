@@ -40,5 +40,31 @@ router.post('/', (req, res) => {
   
   });
 
+//Actualizando empleados
+  router.put('/:id', (req, res) => {
+    const { name, salary } = req.body;
+    const { id } = req.params;
+    const query = `CALL employeeAddOrEdit(?, ?, ?)`;
+    mysqlConnection.query(query, [id, name, salary], (err, rows, fields) =>{
+        if(!err){
+            res.json({status: 'Employeed Updated'});
+        }
+        else{
+            console.log(err);
+        }
+    });
 
+  });
+
+
+  router.delete('/:id', (req, res) => {
+    const { id } = req.params;
+    mysqlConnection.query('DELETE FROM employee WHERE id = ?', [id], (err, rows, fields) => {
+        if(!err){
+            res.json({status: 'Employed Deleted'});
+        }
+        else
+            console.log(err);
+    });
+  });
 module.exports = router; 
